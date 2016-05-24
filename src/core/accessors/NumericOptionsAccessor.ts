@@ -91,7 +91,6 @@ export class NumericOptionsAccessor extends FilterBasedAccessor<ArrayState> {
   }
 
   getBuckets(){
-    console.log("uuid", this.uuid)
     return filter(this.getAggregations(
       [this.uuid, this.key,"buckets"], []
     ), this.emptyOptionsFilter)

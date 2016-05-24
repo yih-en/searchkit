@@ -18,6 +18,7 @@ const qs = require("qs")
 require('es6-promise').polyfill()
 
 const after = require("lodash/after")
+const assign = require("lodash/assign")
 
 export interface SearchkitOptions {
   useHistory?:boolean,
@@ -173,6 +174,18 @@ export class SearchkitManager {
     }
   }
 
+  performShowMore(replaceState=false, notifyState=true){
+    if(notifyState && !isEqual(this.accessors.getState(), this.state)){
+      this.accessors.notifyStateChange(this.state)
+    }
+    this._search({isMore: true})
+    // if(this.options.useHistory){
+    //   const historyMethod = (replaceState) ?
+    //     this.history.replace : this.history.push
+    //   historyMethod({pathname: window.location.pathname, query:this.state})
+    // }
+  }
+
   buildSearchUrl(extraParams = {}){
     const params = defaults(extraParams, this.state || this.accessors.getState())
     const queryString = qs.stringify(params, { encode: true })
@@ -188,7 +201,8 @@ export class SearchkitManager {
     this.performSearch(replaceState)
   }
 
-  _search(){
+  _search(context={}){
+    console.log("Search...");
     this.state = this.accessors.getState()
     let query = this.buildQuery()
     if(this.query && isEqual(query.getJSON(), this.query.getJSON())) {
@@ -197,20 +211,44 @@ export class SearchkitManager {
     this.query = query
     this.loading = true
     this.emitter.trigger()
-    let queryObject = this.queryProcessor(this.query.getJSON())
+    let queryJson = this.query.getJSON()
+    if (context['isMore']){
+      delete queryJson["aggs"]
+    }
+    let queryObject = this.queryProcessor(queryJson)
     this.currentSearchRequest && this.currentSearchRequest.deactivate()
     this.currentSearchRequest = new SearchRequest(
-      this.transport, queryObject, this)
+      this.transport, queryObject, this, context)
     this.currentSearchRequest.run()
   }
 
-  setResults(results){
-    this.compareResults(this.results, results)
-    this.results = results
-    this.error = null
-    this.accessors.setResults(results)
-    this.onResponseChange()
-    this.resultsEmitter.trigger(this.results)
+  setResults(results, context){
+    console.log("context", context)
+    if (context.isMore){
+      results.hits = assign({}, results.hits, {
+        hits: [
+          ...this.results.hits.hits,
+          ...results.hits.hits,
+        ],
+        hasChanged: false
+      })
+      let mergedResults = assign({}, this.results, {
+        hits: results.hits
+      })
+      this.results = mergedResults
+      console.log("merge results", mergedResults)
+      this.error = null
+      this.accessors.setResults(mergedResults)
+      this.onResponseChange()
+      this.resultsEmitter.trigger(this.results)
+    } else {
+      this.compareResults(this.results, results)
+      this.results = results
+      this.error = null
+      this.accessors.setResults(results)
+      this.onResponseChange()
+      this.resultsEmitter.trigger(this.results) 
+    }
   }
 
   compareResults(previousResults, results){
@@ -259,7 +297,7 @@ export class SearchkitManager {
     return get(this.results, ["hits", "hasChanged"], true)
   }
 
-  setError(error){
+  setError(error, context){
     this.error = error
     console.error(this.error)
     this.results = null

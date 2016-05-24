@@ -14,6 +14,7 @@ export type SourceFilterType = string|Array<string>|boolean
 export class ImmutableQuery {
   index: any
   query: any
+  isMore: boolean
   static defaultIndex:any = {
     queryString:"",
     filtersMap:{},
@@ -25,6 +26,7 @@ export class ImmutableQuery {
   }
   constructor(index = ImmutableQuery.defaultIndex) {
     this.index = index
+    this.isMore = false
     this.buildQuery()
   }
 
@@ -161,6 +163,10 @@ export class ImmutableQuery {
     return this.update({
       $merge:{suggest:suggestions}
     })
+  }
+  
+  setIsMore(isMore: boolean){
+    return this.update({ $merge: { isMore } })
   }
 
   update(updateDef) {
