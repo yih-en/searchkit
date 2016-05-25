@@ -178,7 +178,7 @@ export class SearchkitManager {
     if(notifyState && !isEqual(this.accessors.getState(), this.state)){
       this.accessors.notifyStateChange(this.state)
     }
-    this._search({isMore: true})
+    this._search()
     // if(this.options.useHistory){
     //   const historyMethod = (replaceState) ?
     //     this.history.replace : this.history.push
@@ -201,7 +201,7 @@ export class SearchkitManager {
     this.performSearch(replaceState)
   }
 
-  _search(context={}){
+  _search(){
     console.log("Search...");
     this.state = this.accessors.getState()
     let query = this.buildQuery()
@@ -212,19 +212,16 @@ export class SearchkitManager {
     this.loading = true
     this.emitter.trigger()
     let queryJson = this.query.getJSON()
-    if (context['isMore']){
-      delete queryJson["aggs"]
-    }
     let queryObject = this.queryProcessor(queryJson)
     this.currentSearchRequest && this.currentSearchRequest.deactivate()
     this.currentSearchRequest = new SearchRequest(
-      this.transport, queryObject, this, context)
+      this.transport, queryObject, this, query)
     this.currentSearchRequest.run()
   }
 
-  setResults(results, context){
-    console.log("context", context)
-    if (context.isMore){
+  setResults(results, srcQuery){
+    console.log("srcQuery", srcQuery)
+    if (srcQuery.index.isMore){
       results.hits = assign({}, results.hits, {
         hits: [
           ...this.results.hits.hits,

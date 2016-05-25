@@ -14,7 +14,6 @@ export type SourceFilterType = string|Array<string>|boolean
 export class ImmutableQuery {
   index: any
   query: any
-  isMore: boolean
   static defaultIndex:any = {
     queryString:"",
     filtersMap:{},
@@ -26,7 +25,6 @@ export class ImmutableQuery {
   }
   constructor(index = ImmutableQuery.defaultIndex) {
     this.index = index
-    this.isMore = false
     this.buildQuery()
   }
 
@@ -102,6 +100,10 @@ export class ImmutableQuery {
   setAggs(aggs) {
     return this.deepUpdate("aggs", aggs)
   }
+  
+  removeAggs(){
+    return this.remove("aggs")
+  }
 
   getFilters(keys=[]) {
     return this.getFiltersWithoutKeys(keys)
@@ -172,6 +174,12 @@ export class ImmutableQuery {
   update(updateDef) {
     return new ImmutableQuery(
       update(this.index, updateDef)
+    )
+  }
+
+  remove(key) {
+    return new ImmutableQuery(
+      omit(this.index, key)
     )
   }
 

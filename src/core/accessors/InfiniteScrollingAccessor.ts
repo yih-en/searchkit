@@ -19,4 +19,13 @@ export class InfiniteScrollingAccessor extends StatefulAccessor<ValueState> {
     }
     return query
   }
+  
+  postQuery(query){
+    console.log("postQuery")
+    if (Number(this.state.getValue()) > 1){
+      console.log("IS MORE !!")
+      return query.setIsMore(true).removeAggs()
+    }
+    return query
+  }
 }
