@@ -202,7 +202,6 @@ export class SearchkitManager {
   }
 
   _search(){
-    console.log("Search...");
     this.state = this.accessors.getState()
     let query = this.buildQuery()
     if(this.query && isEqual(query.getJSON(), this.query.getJSON())) {
@@ -220,7 +219,6 @@ export class SearchkitManager {
   }
 
   setResults(results, srcQuery){
-    console.log("srcQuery", srcQuery)
     if (srcQuery.index.isMore){
       results.hits = assign({}, results.hits, {
         hits: [
@@ -233,7 +231,6 @@ export class SearchkitManager {
         hits: results.hits
       })
       this.results = mergedResults
-      console.log("merge results", mergedResults)
       this.error = null
       this.accessors.setResults(mergedResults)
       this.onResponseChange()

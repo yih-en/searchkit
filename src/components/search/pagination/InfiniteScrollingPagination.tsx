@@ -194,7 +194,6 @@ export class InfiniteScrollingPagination extends SearchkitComponent<InfiniteScro
   }
   
   showMoreIfNeeded() {
-    console.log("showMore");
     let currentPage = this.getCurrentPage()
     if (this.hasHits() && this.getTotalPages() > currentPage){
       this.accessor.state = this.accessor.state.setValue(currentPage + 1);
@@ -212,7 +211,6 @@ export class InfiniteScrollingPagination extends SearchkitComponent<InfiniteScro
       if (isVisible && !this.searchkit.loading){
         this.showMoreIfNeeded();
       }
-      // console.log('Element is now %s', isVisible ? 'visible' : 'hidden');
     };
 
     return (
