@@ -3,17 +3,26 @@ import {StatefulAccessor} from "./StatefulAccessor"
 
 
 export class InfiniteScrollingAccessor extends StatefulAccessor<ValueState> {
-  state = new ValueState()
+  state = new ValueState(1)
 
   onStateChange(oldState={}){
-    if(oldState[this.urlKey] == this.state.getValue()){
+    // Reset page scrolling on any state change
+    
+    // if(oldState[this.urlKey] == this.state.getValue()){
       this.state = this.state.clear()
-    }
+    // }
+  }
+  
+  fromQueryObject(ob){
+    
+  }
+  
+  getQueryObject(){
+    return {}
   }
 
   buildOwnQuery(query){
     let from = (query.getSize() || 20) * (Number(this.state.getValue()) -1 )
-    console.log("page", this.state.getValue())
     if(from > 0){
       return query.setFrom(from)
     }
@@ -21,9 +30,7 @@ export class InfiniteScrollingAccessor extends StatefulAccessor<ValueState> {
   }
   
   postQuery(query){
-    console.log("postQuery")
     if (Number(this.state.getValue()) > 1){
-      console.log("IS MORE !!")
       return query.setIsMore(true).removeAggs()
     }
     return query

@@ -184,21 +184,33 @@ export class InfiniteScrollingPagination extends SearchkitComponent<InfiniteScro
   getCurrentPage():number {
     return Number(this.accessor.state.getValue()) || 1;
   }
+
+  getTotalPages():number {
+    return Math.ceil(
+      get(this.getResults(), ".hits.total", 1)
+      /
+      get(this.getQuery(), "query.size", 10)
+    );
+  }
   
-  showMore() {
+  showMoreIfNeeded() {
     console.log("showMore");
-    this.accessor.state = this.accessor.state.setValue(this.getCurrentPage() + 1);
-    this.searchkit.performShowMore();
+    let currentPage = this.getCurrentPage()
+    if (this.hasHits() && this.getTotalPages() > currentPage){
+      this.accessor.state = this.accessor.state.setValue(currentPage + 1);
+      this.searchkit.performShowMore();
+    }
   }
   // isDisabled(pageNumber: number): boolean {
   //   return isNaN(pageNumber) || (pageNumber < 1) || (pageNumber > this.getTotalPages());
   // }
 
   render() {
-    // if (!this.hasHits()) return null;
+    if (!this.hasHits()) return null;
+    
     var onChange = (isVisible) => {
       if (isVisible && !this.searchkit.loading){
-        this.showMore();
+        this.showMoreIfNeeded();
       }
       // console.log('Element is now %s', isVisible ? 'visible' : 'hidden');
     };
