@@ -3,4 +3,5 @@ export interface ShowMoreProps {
   hasMore: boolean
   isLoading: boolean
   page: number
+  totalPages: number
 } 
