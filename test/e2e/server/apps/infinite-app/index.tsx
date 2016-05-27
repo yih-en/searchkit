@@ -5,7 +5,7 @@ const {
   SelectedFilters, ResetFilters, RangeFilter, NumericRefinementListFilter,
   ViewSwitcherHits, ViewSwitcherToggle, DynamicRangeFilter,
   InputFilter, GroupedSelectedFilters,
-  InfiniteScrollingPagination
+  InfiniteScrollingPagination, ShowMorePagination
 } = require("../../../../../src")
 
 const {
@@ -122,6 +122,7 @@ class App extends React.Component<any, any> {
             />
             <NoHits suggestionsField={"title"}/>
             <InfiniteScrollingPagination />
+            {/*<ShowMorePagination />*/}
           </LayoutResults>
 
           </LayoutBody>

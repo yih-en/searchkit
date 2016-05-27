@@ -67,7 +67,7 @@ export class Accessor {
   buildOwnQuery(query:ImmutableQuery){
     return query
   }
-  postQuery(query:ImmutableQuery){
+  postProcessQuery(query:ImmutableQuery){
     return query
   }
   

@@ -167,6 +167,10 @@ export class ImmutableQuery {
     })
   }
   
+  getIsMore(){
+    return this.index.isMore
+  }
+  
   setIsMore(isMore: boolean){
     return this.update({ $merge: { isMore } })
   }

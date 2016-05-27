@@ -29,10 +29,10 @@ export class InfiniteScrollingAccessor extends StatefulAccessor<ValueState> {
     return query
   }
   
-  postQuery(query){
+  postProcessQuery(query){
     if (Number(this.state.getValue()) > 1){
       return query.setIsMore(true).removeAggs()
     }
-    return query
+    return query.setIsMore(false)
   }
 }

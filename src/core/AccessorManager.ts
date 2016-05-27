@@ -116,15 +116,15 @@ export class AccessorManager {
     }, query)
   }
 
-  postQuery(query){
+  postProcessQuery(query){
     return reduce(this.getActiveAccessors(), (query, accessor)=>{
-      return accessor.postQuery(query)
+      return accessor.postProcessQuery(query)
     }, query)
   }
 
   buildQuery(){
     each(this.getActiveAccessors(), accessor => accessor.beforeBuildQuery())
-    return this.postQuery(
+    return this.postProcessQuery(
       this.buildOwnQuery(
         this.buildSharedQuery(new ImmutableQuery())
       )
