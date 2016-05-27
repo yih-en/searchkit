@@ -7,10 +7,7 @@ export class InfiniteScrollingAccessor extends StatefulAccessor<ValueState> {
 
   onStateChange(oldState={}){
     // Reset page scrolling on any state change
-    
-    // if(oldState[this.urlKey] == this.state.getValue()){
-      this.state = this.state.clear()
-    // }
+    this.state = this.state.clear()
   }
   
   fromQueryObject(ob){

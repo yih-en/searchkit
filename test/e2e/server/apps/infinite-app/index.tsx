@@ -64,6 +64,7 @@ const RefinementOption = (props) => (
 
 class App extends React.Component<any, any> {
   render(){
+    const autoLoad = false
     return (
       <SearchkitProvider searchkit={searchkit}>
         <Layout>
@@ -121,8 +122,9 @@ class App extends React.Component<any, any> {
                 scrollTo="body"
             />
             <NoHits suggestionsField={"title"}/>
-            <InfiniteScrollingPagination />
-            {/*<ShowMorePagination />*/}
+            {autoLoad 
+              ? <InfiniteScrollingPagination />
+              : <ShowMorePagination />}
           </LayoutResults>
 
           </LayoutBody>
