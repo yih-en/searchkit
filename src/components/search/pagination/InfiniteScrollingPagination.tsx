@@ -63,7 +63,7 @@ export class InfiniteScrollingPagination extends SearchkitComponent<InfiniteScro
     if (this.searchkit.loading || !this.hasMore()) return;
     
     this.accessor.state = this.accessor.state.setValue(this.getCurrentPage() + 1);
-    this.searchkit.performShowMore();
+    this.searchkit.performSearch();
   }
 
   render() {

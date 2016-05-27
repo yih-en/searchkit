@@ -174,18 +174,6 @@ export class SearchkitManager {
     }
   }
 
-  performShowMore(replaceState=false, notifyState=true){
-    if(notifyState && !isEqual(this.accessors.getState(), this.state)){
-      this.accessors.notifyStateChange(this.state)
-    }
-    this._search()
-    // if(this.options.useHistory){
-    //   const historyMethod = (replaceState) ?
-    //     this.history.replace : this.history.push
-    //   historyMethod({pathname: window.location.pathname, query:this.state})
-    // }
-  }
-
   buildSearchUrl(extraParams = {}){
     const params = defaults(extraParams, this.state || this.accessors.getState())
     const queryString = qs.stringify(params, { encode: true })
