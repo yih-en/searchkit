@@ -8,7 +8,7 @@ export class SearchRequest {
   constructor(public transport:ESTransport,
     public query:Object, 
     public searchkit:SearchkitManager,
-    public srcQuery:Object){
+    public srcQuery?:Object){
     this.active = true
   }
 

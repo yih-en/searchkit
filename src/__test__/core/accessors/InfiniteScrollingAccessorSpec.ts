@@ -33,7 +33,6 @@ describe("InfiniteScrollingAccessor", ()=> {
       let newQuery = query.setAggs({})
        newQuery = this.accessor.buildOwnQuery(newQuery)
        newQuery = this.accessor.postProcessQuery(newQuery)
-      console.log(newQuery);
       expect(newQuery.getPage()).toBe(state || 1)
       expect(newQuery.getFrom()).toBe(from)
       expect(newQuery.shouldAppendResults()).toBe(shouldAppendResults)
@@ -44,8 +43,8 @@ describe("InfiniteScrollingAccessor", ()=> {
         
       }
     }
-    expectStateFrom(null, undefined, false)
-    expectStateFrom(1, undefined, false)
+    expectStateFrom(null, undefined, undefined)
+    expectStateFrom(1, undefined, undefined)
     expectStateFrom(2, 20, true)
     expectStateFrom(3, 40, true)
   })
