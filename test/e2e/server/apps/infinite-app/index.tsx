@@ -1,6 +1,6 @@
 const {
   SearchkitManager,SearchkitProvider,
-  SearchBox, Hits, RefinementListFilter, Pagination,
+  SearchBox, Hits, RefinementListFilter, MenuFilter, Pagination,
   HierarchicalMenuFilter, HitsStats, SortingSelector, NoHits,
   SelectedFilters, ResetFilters, RangeFilter, NumericRefinementListFilter,
   ViewSwitcherHits, ViewSwitcherToggle, DynamicRangeFilter,
@@ -55,6 +55,12 @@ const MovieHitsListItem = (props)=> {
   )
 }
 
+const RefinementOption = (props) => (
+  <div className={props.bemBlocks.option().state({selected:props.selected}).mix(props.bemBlocks.container("item"))} onClick={props.onClick}>
+    <div className={props.bemBlocks.option("text")}>{props.label}</div>
+    <div className={props.bemBlocks.option("count")}>{props.count}</div>
+  </div>
+)
 
 class App extends React.Component<any, any> {
   render(){
@@ -73,6 +79,7 @@ class App extends React.Component<any, any> {
             <DynamicRangeFilter field="metaScore" id="metascore" title="Metascore"/>
             <RangeFilter min={0} max={10} field="imdbRating" id="imdbRating" title="IMDB Rating" showHistogram={true}/>
             <InputFilter id="writers" searchThrottleTime={500} title="Writers" placeholder="Search writers" searchOnChange={true} queryFields={["writers"]} />
+            <MenuFilter id="actors" title="Actors" field="actors.raw" size={10} itemComponent={RefinementOption}/>
             <RefinementListFilter id="actors" title="Actors" field="actors.raw" size={10}/>
             <RefinementListFilter translations={{"facets.view_more":"View more writers"}} id="writers" title="Writers" field="writers.raw" operator="OR" size={10}/>
             <RefinementListFilter id="countries" title="Countries" field="countries.raw" operator="OR" size={10}/>
