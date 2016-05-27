@@ -33,6 +33,6 @@ export class InfiniteScrollingAccessor extends StatefulAccessor<ValueState> {
     if (Number(this.state.getValue()) > 1){
       return query.setShouldAppendResults(true).removeAggs()
     }
-    return query.setShouldAppendResults(false)
+    return query
   }
 }
