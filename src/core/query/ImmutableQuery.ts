@@ -167,12 +167,12 @@ export class ImmutableQuery {
     })
   }
   
-  getIsMore(){
-    return this.index.isMore
+  shouldAppendResults(){
+    return this.index.shouldAppendResults
   }
   
-  setIsMore(isMore: boolean){
-    return this.update({ $merge: { isMore } })
+  setShouldAppendResults(shouldAppendResults: boolean){
+    return this.update({ $merge: { shouldAppendResults } })
   }
 
   update(updateDef) {

@@ -207,7 +207,7 @@ export class SearchkitManager {
   }
 
   setResults(results, srcQuery){
-    if (srcQuery && srcQuery.index && srcQuery.index.isMore){
+    if (srcQuery && srcQuery.shouldAppendResults()){
       results.hits = assign({}, results.hits, {
         hits: [
           ...this.results.hits.hits,

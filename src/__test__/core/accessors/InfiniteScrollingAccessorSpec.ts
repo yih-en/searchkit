@@ -28,7 +28,7 @@ describe("InfiniteScrollingAccessor", ()=> {
   it("buildOwnQuery and postProcessQuery", ()=> {
     let query = new ImmutableQuery().setSize(20)
 
-    const expectStateFrom = (state, from, isMore)=> {
+    const expectStateFrom = (state, from, shouldAppendResults)=> {
       this.accessor.state = this.accessor.state.setValue(state)
       let newQuery = query.setAggs({})
        newQuery = this.accessor.buildOwnQuery(newQuery)
@@ -36,8 +36,8 @@ describe("InfiniteScrollingAccessor", ()=> {
       console.log(newQuery);
       expect(newQuery.getPage()).toBe(state || 1)
       expect(newQuery.getFrom()).toBe(from)
-      expect(newQuery.getIsMore()).toBe(isMore)
-      if (isMore){
+      expect(newQuery.shouldAppendResults()).toBe(shouldAppendResults)
+      if (shouldAppendResults){
         expect(newQuery.index.aggs).toBe(undefined)
       } else {
         expect(newQuery.index.aggs).toEqual({})
