@@ -49,7 +49,8 @@ export class NumberInput extends React.Component<any, any> {
   }
 
   render() {
-    return <input type="number" {...this.props} value = { this.state.value } onChange={this.onChange}/>
+    const { field, ...rest } = this.props
+    return <input type="number" field {...rest} value = { this.state.value } onChange={this.onChange}/>
   }
 }
 
